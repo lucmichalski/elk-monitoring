@@ -1,0 +1,23 @@
+version: '3'
+services:
+  web1:
+    build: ./ngx1    
+    container_name: ngx1
+    network_mode: bridge
+  web2:
+    build: ./ngx2
+    container_name: ngx2
+    network_mode: bridge
+  ha:
+    build: ./ha
+    container_name: ha
+    ports:
+      - "8080:80"
+      - "8404:8404"
+    depends_on:
+      - web1
+      - web2
+    network_mode: bridge
+    links: 
+      - "web1:web1"
+      - "web2:web2"

@@ -77,3 +77,12 @@ docker run -d --name mongo-exporter \
     eses/mongodb_exporter  \
     -mongodb.uri mongodb://mongodb_exporter:s3cr3tpassw0rd@some-mongo:27017 \
     -web.listen-address=":9204"
+
+docker-compose -f haproxy_cluster/docker-compose.yaml up -d
+
+docker run -d -p 9101:9101 \
+    --name haproxy-exporter \
+    --link ha:ha \
+    prom/haproxy-exporter \
+    --haproxy.scrape-uri="http://admin:password@ha:8404/haproxy?stats;csv" \
+    --log.level="info"
