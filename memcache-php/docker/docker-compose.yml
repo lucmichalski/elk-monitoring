@@ -4,6 +4,7 @@ services:
     image: memcached:alpine
     ports:
       - "11212:11211"
+    container_name: memecached
 
   mysql:
     image: mysql:5.7
@@ -15,7 +16,7 @@ services:
     ports:
       - "13306:3306"
     volumes:
-      - ../application/initial.sql:/docker-entrypoint-initdb.d/initial.sql
+      - ./mysql/initial.sql:/docker-entrypoint-initdb.d/initial.sql
     container_name: mysql
 
   nginx:
@@ -24,13 +25,13 @@ services:
       - "33780:80"
       - "33443:443"
     volumes:
-      - ../:/var/www/html
+      - ./app:/var/www/html/public
     container_name: nginx
 
   web:
     build: ./php-fpm73
     volumes:
-      - ../:/var/www/html
+      - ./app:/var/www/html/public
     environment:
       DATABASE_HOST: 'mysql'
       DATABASE_NAME: 'mysql_database'
