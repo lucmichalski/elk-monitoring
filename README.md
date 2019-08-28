@@ -136,8 +136,8 @@ docker run -d --name memcached-exporter \
 
 ### PHP_FPM
 
-docker run -it --rm \
+docker run -d --rm \
     -p 9253:9253 \
-    -e PHP_FPM_SCRAPE_URI="tcp://127.0.0.1:9000/status,tcp://127.0.0.1:9001/status" \
+    -e PHP_FPM_SCRAPE_URI="tcp://192.168.1.46:9000/status" \
     hipages/php-fpm_exporter
 

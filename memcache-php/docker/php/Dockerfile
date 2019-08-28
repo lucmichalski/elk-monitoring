@@ -1,6 +1,7 @@
 FROM php:7.3.0-fpm
 
 ADD php.ini /usr/local/etc/php/conf.d/php.ini
+COPY fpm-status.conf /usr/local/etc/php-fpm.d/fpm-status.conf
 
 RUN apt-get update \
   && docker-php-ext-install pdo_mysql mysqli mbstring

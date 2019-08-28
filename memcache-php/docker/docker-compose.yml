@@ -4,7 +4,7 @@ services:
     image: memcached:alpine
     ports:
       - "11212:11211"
-    container_name: memecached
+    container_name: memcached
 
   mysql:
     image: mysql:5.7
@@ -29,7 +29,9 @@ services:
     container_name: nginx
 
   web:
-    build: ./php-fpm73
+    build: ./php
+    ports:
+      - "9000:9000"
     volumes:
       - ./app:/var/www/html/public
     environment:
