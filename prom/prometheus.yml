@@ -64,3 +64,24 @@ scrape_configs:
     - targets: ['192.168.1.46:9101']
     - labels:
         name: "haproxy"  
+  
+  - job_name: 'nginx'
+  
+    static_configs:
+    - targets: ['192.168.1.46:9113']
+    - labels:
+        name: "nginx" 
+
+  - job_name: 'cadvisor'
+  
+    static_configs:
+    - targets: ['192.168.1.46:32880']
+    - labels:
+        name: "cadvisor" 
+
+  - job_name: 'memcached'
+  
+    static_configs:
+    - targets: ['192.168.1.46:9150']
+    - labels:
+        name: "memcached"

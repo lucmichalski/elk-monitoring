@@ -114,3 +114,30 @@ docker run -d --name ngx-vts-exporter \
     --link ngxvts:ngxvts \
     -e NGINX_HOST="http://ngxvts:8080/status/format/json" \
     sophos/nginx-vts-exporter
+
+### CADVISOR
+
+docker run -d  \
+    -v /:/rootfs:ro \
+    -v /var/run:/var/run:ro \
+    -v /sys:/sys:ro \
+    -v /var/lib/docker/:/var/lib/docker:ro \
+    -v /dev/disk/:/dev/disk:ro \
+    -p 32880:8080 \
+    --name=cadvisor \
+    google/cadvisor
+
+### MEMCACHED
+
+docker run -d --name memcached-exporter \
+    -p 9150:9150 \
+    quay.io/prometheus/memcached-exporter \
+    --memcached.address 192.168.1.46:11212
+
+### PHP_FPM
+
+docker run -it --rm \
+    -p 9253:9253 \
+    -e PHP_FPM_SCRAPE_URI="tcp://127.0.0.1:9000/status,tcp://127.0.0.1:9001/status" \
+    hipages/php-fpm_exporter
+
