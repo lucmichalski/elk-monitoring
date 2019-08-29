@@ -1,7 +1,8 @@
 <?php
 error_reporting(E_ALL);
 
-echo "<h1>docker-php-nginx-mysql-memcached</h1>";
+echo "<h1>Server address:</h1>";
+echo $_SERVER['SERVER_ADDR'];
 
 $now = date('Y-m-d H:i:s');
 

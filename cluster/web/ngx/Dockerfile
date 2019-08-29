@@ -1,7 +1,8 @@
-FROM nginx
+FROM nginx:alpine
 
-ADD nginx.conf /etc/nginx/nginx.conf
-ADD fastcgi.conf /etc/nginx/fastcgi.conf
-ADD server.conf /etc/nginx/conf.d/default.conf
-ADD localhost.key /etc/ssl/private/localhost.key
-ADD localhost.crt /etc/ssl/certs/localhost.crt
+COPY nginx.conf /etc/nginx/nginx.conf
+COPY fastcgi.conf /etc/nginx/fastcgi.conf
+COPY server.template /etc/nginx/conf.d/server.template
+COPY status.conf /etc/nginx/conf.d/status.conf
+COPY localhost.key /etc/ssl/private/localhost.key
+COPY localhost.crt /etc/ssl/certs/localhost.crt
