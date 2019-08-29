@@ -78,3 +78,33 @@ services:
       - php
     container_name: cluster-php-exporter
     
+  apache:
+    image: httpd:alpine
+    ports:
+      - "33880:80"
+    container_name: cluster-apache
+
+  haproxy:
+    build: ./web/ha
+    ports:
+      - "34880:80"
+    depends_on:
+      - nginx
+      - apache
+    container_name: cluster-haproxy
+
+  haproxy-exporter:
+    image: prom/haproxy-exporter
+    ports:
+      - "9101:9101"
+    command: --haproxy.scrape-uri="http://admin:password@haproxy:8404/haproxy?stats;csv" --log.level="info"
+    container_name: cluster-haproxy-exporter
+
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    container_name: cluster-prometheus
+  
