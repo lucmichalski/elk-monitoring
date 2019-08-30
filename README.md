@@ -143,3 +143,9 @@ docker run -d --rm \
 
 #### Prometheus metrics query
 ({__name__=~'go_.*', job='haproxy'})
+
+#### For grafana php-fpm
+{instance=~"^$Host$"}
+
+#### For grafana mongo
+{instance=~"$env"}
