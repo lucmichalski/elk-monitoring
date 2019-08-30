@@ -141,3 +141,5 @@ docker run -d --rm \
     -e PHP_FPM_SCRAPE_URI="tcp://192.168.1.46:9000/status" \
     hipages/php-fpm_exporter
 
+#### Prometheus metrics query
+({__name__=~'go_.*', job='haproxy'})

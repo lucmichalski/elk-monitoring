@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 services:
   mysql:
@@ -8,7 +8,13 @@ services:
     volumes:
       - ./db/mysql/scripts:/docker-entrypoint-initdb.d
     container_name: cluster-mysql
-  
+
+  mysql-client:
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+    container_name: cluster-mysql-client
+
   mysql-exporter:
     image: prom/mysqld-exporter
     env_file:
@@ -17,7 +23,14 @@ services:
       - "9104:9104"
     depends_on:
       - mysql
-    command: ["--collect.info_schema.processlist", "--collect.info_schema.innodb_metrics", "--collect.info_schema.tablestats", "--collect.info_schema.tables", "--collect.info_schema.userstats"]
+    # command:
+    #   [
+    #     "--collect.info_schema.processlist",
+    #     "--collect.info_schema.innodb_metrics",
+    #     "--collect.info_schema.tablestats",
+    #     "--collect.info_schema.tables",
+    #     "--collect.info_schema.userstats",
+    #   ]
     container_name: cluster-mysql-exporter
 
   mongo:
@@ -33,19 +46,20 @@ services:
   mongo-express:
     image: mongo-express
     depends_on:
-        - mongo
+      - mongo
     ports:
       - "38081:8081"
     environment:
       - ME_CONFIG_MONGODB_ADMINUSERNAME=root
       - ME_CONFIG_MONGODB_ADMINPASSWORD=secret
-  
+    container_name: cluster-mongo-express
+
   mongo-exporter:
     image: eses/mongodb_exporter
     ports:
       - "9204:9204"
     command: -mongodb.uri mongodb://mongodb_exporter:s3cr3tpassw0rd@mongo:27017 -web.listen-address=":9204"
-    depends_on: 
+    depends_on:
       - mongo
     container_name: cluster-mongo-exporter
 
@@ -96,7 +110,6 @@ services:
       - memcached
     container_name: cluster-php
 
-
   php-exporter:
     image: hipages/php-fpm_exporter
     ports:
@@ -106,7 +119,7 @@ services:
     depends_on:
       - php
     container_name: cluster-php-exporter
-    
+
   apache:
     image: httpd:alpine
     ports:
@@ -136,4 +149,10 @@ services:
     ports:
       - "9090:9090"
     container_name: cluster-prometheus
-  
+
+  grafana:
+    image: grafana/grafana
+    env_file: ./env/grafana-variables.env
+    ports:
+      - "3000:3000"
+    container_name: cluster-grafana

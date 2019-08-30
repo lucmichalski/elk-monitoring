@@ -1,15 +1,15 @@
 # my global config
 global:
-  scrape_interval:     15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  scrape_interval: 15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
   evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
   # scrape_timeout is set to the global default (10s).
 
 # Alertmanager configuration
 alerting:
   alertmanagers:
-  - static_configs:
-    - targets:
-      # - alertmanager:9093
+    - static_configs:
+        - targets:
+          # - alertmanager:9093
 
 # Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
 rule_files:
@@ -20,66 +20,92 @@ rule_files:
 # Here it's Prometheus itself.
 scrape_configs:
   # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
-  - job_name: 'prometheus'
+  - job_name: "prometheus"
 
     # metrics_path defaults to '/metrics'
     # scheme defaults to 'http'.
 
     static_configs:
-    - targets: ['localhost:9090']
-    - labels:
-        name: "prom"
-  
-  - job_name: 'mysql'
-    static_configs:
-    - targets: ['mysql-exporter:9104']
-    - labels:
-        name: "mysql"
+      - targets: ["localhost:9090"]
+      - labels:
+          name: "prom"
+    metric_relabel_configs:
+      - source_labels: [__name__]
+        regex: go_.*
+        action: drop    
 
-  # - job_name: 'docker'      
+  - job_name: "mysql"
+    static_configs:
+      - targets: ["mysql-exporter:9104"]
+      - labels:
+          name: "mysql"
+    metric_relabel_configs:
+      - source_labels: [__name__]
+        regex: go_.*
+        action: drop          
+
+  # - job_name: 'docker'
   #   static_configs:
   #   - targets: ['192.168.1.46:9323']
   #   - labels:
   #       name: "docker"
 
-  # - job_name: 'main-node-exporter'      
+  # - job_name: 'main-node-exporter'
   #   static_configs:
   #   - targets: ['192.168.1.46:9100']
   #   - labels:
   #       name: "node-exporter"
-    
-  - job_name: 'mongo'      
-    static_configs:
-    - targets: ['mongo-exporter:9204']
-    - labels:
-        name: "mongo"  
-    
-  - job_name: 'haproxy'      
-    static_configs:
-    - targets: ['haproxy-exporter:9101']
-    - labels:
-        name: "haproxy"  
-  
-  - job_name: 'nginx'  
-    static_configs:
-    - targets: ['nginx-exporter:9113']
-    - labels:
-        name: "nginx" 
 
-  # - job_name: 'cadvisor'  
+  - job_name: "mongo"
+    static_configs:
+      - targets: ["mongo-exporter:9204"]
+      - labels:
+          name: "mongo"
+    metric_relabel_configs:
+      - source_labels: [__name__]
+        regex: go_.*
+        action: drop
+
+  - job_name: "haproxy"
+    static_configs:
+      - targets: ["haproxy-exporter:9101"]
+    metric_relabel_configs:
+      - source_labels: [__name__]
+        regex: go_.*
+        action: drop
+
+  - job_name: "nginx"
+    static_configs:
+      - targets: ["nginx-exporter:9113"]
+      - labels:
+          name: "nginx"
+    metric_relabel_configs:
+      - source_labels: [__name__]
+        regex: go_.*
+        action: drop          
+
+  # - job_name: 'cadvisor'
   #   static_configs:
   #   - targets: ['192.168.1.46:32880']
   #   - labels:
-  #       name: "cadvisor" 
+  #       name: "cadvisor"
 
-  - job_name: 'memcached'  
+  - job_name: "memcached"
     static_configs:
-    - targets: ['memcached-exporter:9150']
-    - labels:
-        name: "memcached"
-      
-  - job_name: 'php-fpm'  
+      - targets: ["memcached-exporter:9150"]
+      - labels:
+          name: "memcached"
+    metric_relabel_configs:
+      - source_labels: [__name__]
+        regex: go_.*
+        action: drop          
+
+  - job_name: "php-fpm"
     static_configs:
-    - targets: ['php-exporter:9253']
-    - labels:
-        name: "php-fpm"
+      - targets: ["php-exporter:9253"]
+      - labels:
+          name: "php-fpm"
+    metric_relabel_configs:
+      - source_labels: [__name__]
+        regex: go_.*
+        action: drop          
