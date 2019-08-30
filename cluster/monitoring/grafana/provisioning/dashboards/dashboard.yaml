@@ -1,0 +1,11 @@
+apiVersion: 1
+
+providers:
+- name: 'Local'
+  orgId: 1
+  folder: ''
+  folderUid: ''
+  editable: true
+  type: file
+  options:
+    path: /var/lib/grafana/dashboards
