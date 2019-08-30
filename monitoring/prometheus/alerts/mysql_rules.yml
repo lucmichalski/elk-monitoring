@@ -1,0 +1,11 @@
+groups:
+  - name: Mysql
+    rules:
+    - alert: Mysql-down
+      expr: mysql_up < 1
+      for: 1m
+      labels:
+        severity: warning
+      annotations:
+        summary: "Test summary"
+        description: "Test description"
