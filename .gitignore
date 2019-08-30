@@ -1,2 +1,3 @@
 # Ignore prometheus env file
 /env/prometheus-secrets.env
+/monitoring/alertmanager/config.yml

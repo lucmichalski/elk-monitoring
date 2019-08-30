@@ -125,16 +125,27 @@ services:
     image: prom/haproxy-exporter
     ports:
       - "9101:9101"
-    command: --haproxy.scrape-uri="http://admin:password@haproxy:8404/haproxy?stats;csv" --log.level="info"
+    command: 
+      - '--haproxy.scrape-uri="http://admin:password@haproxy:8404/haproxy?stats;csv"'
+      - '--log.level="info"'
     container_name: cluster-haproxy-exporter
 
   prometheus:
     image: prom/prometheus
+    env_file: ./env/prometheus-secrets.env
     volumes:
       - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
       - "9090:9090"
     container_name: cluster-prometheus
+
+  alertmanager:
+    image: prom/alertmanager
+    volumes:
+      - ./monitoring/alertmanager/config.yml:/etc/alertmanager/config.yml
+    command:
+      - '--config.file=/etc/alertmanager/config.yml'
+    container_name: cluster-alertmanager
 
   grafana:
     build: ./monitoring/grafana
