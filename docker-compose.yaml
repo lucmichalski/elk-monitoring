@@ -126,9 +126,24 @@ services:
     ports:
       - "9101:9101"
     command: 
-      - '--haproxy.scrape-uri="http://admin:password@haproxy:8404/haproxy?stats;csv"'
-      - '--log.level="info"'
+      - '--haproxy.scrape-uri=http://admin:password@haproxy:8404/haproxy?stats;csv'
+      - '--log.level=info'
     container_name: cluster-haproxy-exporter
+
+  node-exporter:
+    image: prom/node-exporter
+    container_name: cluster-node-exporter
+  
+  cadvisor:
+    image: google/cadvisor:latest
+    ports:
+      - 8080:8080
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    container_name: cluster-cadvisor
 
   prometheus:
     image: prom/prometheus

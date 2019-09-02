@@ -43,19 +43,22 @@ scrape_configs:
     metric_relabel_configs:
       - source_labels: [__name__]
         regex: go_.*
-        action: drop          
+        action: drop 
+    relabel_configs:
+      - source_labels: [__address__]
+        regex: '.*'
+        target_label: instance
+        replacement: 'mysql_a'         
 
-  # - job_name: 'docker'
-  #   static_configs:
-  #   - targets: ['192.168.1.46:9323']
-  #   - labels:
-  #       name: "docker"
-
-  # - job_name: 'main-node-exporter'
-  #   static_configs:
-  #   - targets: ['192.168.1.46:9100']
-  #   - labels:
-  #       name: "node-exporter"
+  - job_name: 'main-node-exporter'
+    static_configs:
+    - targets: ['node-exporter:9100']
+    - labels:
+        name: "node-exporter"
+    metric_relabel_configs:
+      - source_labels: [__name__]
+        regex: go_.*
+        action: drop    
 
   - job_name: "mongo"
     static_configs:
@@ -66,6 +69,11 @@ scrape_configs:
       - source_labels: [__name__]
         regex: go_.*
         action: drop
+    relabel_configs:
+      - source_labels: [__address__]
+        regex: '.*'
+        target_label: instance
+        replacement: 'mongo_a' 
 
   - job_name: "haproxy"
     static_configs:
@@ -85,11 +93,15 @@ scrape_configs:
         regex: go_.*
         action: drop          
 
-  # - job_name: 'cadvisor'
-  #   static_configs:
-  #   - targets: ['192.168.1.46:32880']
-  #   - labels:
-  #       name: "cadvisor"
+  - job_name: 'cadvisor'
+    static_configs:
+    - targets: ['cadvisor:8080']
+    - labels:
+        name: "cadvisor"
+    metric_relabel_configs:
+      - source_labels: [__name__]
+        regex: go_.*
+        action: drop    
 
   - job_name: "memcached"
     static_configs:

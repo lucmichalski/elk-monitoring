@@ -149,3 +149,6 @@ docker run -d --rm \
 
 #### For grafana mongo
 {instance=~"$env"}
+
+### Test filesystem disk available
+fallocate -l 10G test.img
