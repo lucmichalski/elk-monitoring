@@ -8,12 +8,26 @@ services:
     volumes:
       - ./db/mysql/scripts:/docker-entrypoint-initdb.d
     container_name: cluster-mysql
+    restart: always
+    logging:
+     #limit logs to 400MB (4rotations of 100M each)
+     driver: "json-file"
+     options:
+       max-size: "100m"
+       max-file: "4"
 
   mysql-client:
     image: mysql:5.7
     environment:
       - MYSQL_ROOT_PASSWORD=password
     container_name: cluster-mysql-client
+    restart: always
+    logging:
+     #limit logs to 400MB (4rotations of 100M each)
+     driver: "json-file"
+     options:
+       max-size: "100m"
+       max-file: "4"
 
   mysql-exporter:
     image: prom/mysqld-exporter
@@ -32,6 +46,13 @@ services:
         "--collect.info_schema.userstats",
       ]
     container_name: cluster-mysql-exporter
+    restart: always
+    logging:
+     #limit logs to 400MB (4rotations of 100M each)
+     driver: "json-file"
+     options:
+       max-size: "100m"
+       max-file: "4"
 
   mongo:
     image: mongo:3
@@ -39,6 +60,13 @@ services:
     volumes:
       - ./db/mongo/scripts:/docker-entrypoint-initdb.d
     container_name: cluster-mongo
+    restart: always
+    logging:
+     #limit logs to 400MB (4rotations of 100M each)
+     driver: "json-file"
+     options:
+       max-size: "100m"
+       max-file: "4"
 
   mongo-exporter:
     image: eses/mongodb_exporter
@@ -48,10 +76,24 @@ services:
     depends_on:
       - mongo
     container_name: cluster-mongo-exporter
+    restart: always
+    logging:
+     #limit logs to 400MB (4rotations of 100M each)
+     driver: "json-file"
+     options:
+       max-size: "100m"
+       max-file: "4"
 
   memcached:
     image: memcached:alpine
     container_name: cluster-memcached
+    restart: always
+    logging:
+     #limit logs to 400MB (4rotations of 100M each)
+     driver: "json-file"
+     options:
+       max-size: "100m"
+       max-file: "4"
 
   memcached-exporter:
     image: quay.io/prometheus/memcached-exporter
@@ -61,6 +103,13 @@ services:
       - memcached
     command: ["--memcached.address", "memcached:11211"]
     container_name: cluster-memcached-exporter
+    restart: always
+    logging:
+     #limit logs to 400MB (4rotations of 100M each)
+     driver: "json-file"
+     options:
+       max-size: "100m"
+       max-file: "4"
 
   nginx:
     build: ./web/ngx
@@ -75,6 +124,13 @@ services:
     depends_on:
       - php
     container_name: cluster-nginx
+    restart: always
+    logging:
+     #limit logs to 400MB (4rotations of 100M each)
+     driver: "json-file"
+     options:
+       max-size: "100m"
+       max-file: "4"
 
   nginx-exporter:
     image: nginx/nginx-prometheus-exporter:0.4.2
@@ -84,6 +140,13 @@ services:
     depends_on:
       - nginx
     container_name: cluster-nginx-exporter
+    restart: always
+    logging:
+     #limit logs to 400MB (4rotations of 100M each)
+     driver: "json-file"
+     options:
+       max-size: "100m"
+       max-file: "4"
 
   php:
     build: ./web/php
@@ -95,6 +158,13 @@ services:
       - mysql
       - memcached
     container_name: cluster-php
+    restart: always
+    logging:
+     #limit logs to 400MB (4rotations of 100M each)
+     driver: "json-file"
+     options:
+       max-size: "100m"
+       max-file: "4"
 
   php-exporter:
     image: hipages/php-fpm_exporter
@@ -105,12 +175,26 @@ services:
     depends_on:
       - php
     container_name: cluster-php-exporter
+    restart: always
+    logging:
+     #limit logs to 400MB (4rotations of 100M each)
+     driver: "json-file"
+     options:
+       max-size: "100m"
+       max-file: "4"
 
   apache:
     image: httpd:alpine
     ports:
       - "33880:80"
     container_name: cluster-apache
+    restart: always
+    logging:
+     #limit logs to 400MB (4rotations of 100M each)
+     driver: "json-file"
+     options:
+       max-size: "100m"
+       max-file: "4"
 
   haproxy:
     build: ./web/ha
@@ -120,6 +204,13 @@ services:
       - nginx
       - apache
     container_name: cluster-haproxy
+    restart: always
+    logging:
+     #limit logs to 400MB (4rotations of 100M each)
+     driver: "json-file"
+     options:
+       max-size: "100m"
+       max-file: "4"
 
   haproxy-exporter:
     image: prom/haproxy-exporter
@@ -129,10 +220,24 @@ services:
       - '--haproxy.scrape-uri=http://admin:password@haproxy:8404/haproxy?stats;csv'
       - '--log.level=info'
     container_name: cluster-haproxy-exporter
+    restart: always
+    logging:
+     #limit logs to 400MB (4rotations of 100M each)
+     driver: "json-file"
+     options:
+       max-size: "100m"
+       max-file: "4"
 
   node-exporter:
     image: prom/node-exporter
     container_name: cluster-node-exporter
+    restart: always
+    logging:
+     #limit logs to 400MB (4rotations of 100M each)
+     driver: "json-file"
+     options:
+       max-size: "100m"
+       max-file: "4"
   
   cadvisor:
     image: google/cadvisor:latest
@@ -144,16 +249,34 @@ services:
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
     container_name: cluster-cadvisor
+    restart: always
+    logging:
+     #limit logs to 400MB (4rotations of 100M each)
+     driver: "json-file"
+     options:
+       max-size: "100m"
+       max-file: "4"
 
   prometheus:
     image: prom/prometheus
     env_file: ./env/prometheus-secrets.env
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.retention.size=100GB'
+      - '--storage.tsdb.retention.time=10d'
     volumes:
       - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - ./monitoring/prometheus/alerts:/etc/prometheus/alerts
     ports:
       - "9090:9090"
     container_name: cluster-prometheus
+    restart: always
+    logging:
+     #limit logs to 400MB (4rotations of 100M each)
+     driver: "json-file"
+     options:
+       max-size: "100m"
+       max-file: "4"
 
   alertmanager:
     image: prom/alertmanager
@@ -164,6 +287,13 @@ services:
     command:
       - '--config.file=/etc/alertmanager/config.yml'
     container_name: cluster-alertmanager
+    restart: always
+    logging:
+     #limit logs to 400MB (4rotations of 100M each)
+     driver: "json-file"
+     options:
+       max-size: "100m"
+       max-file: "4"
 
   grafana:
     build: ./monitoring/grafana
@@ -171,3 +301,10 @@ services:
     ports:
       - "3000:3000"
     container_name: cluster-grafana
+    restart: always
+    logging:
+     #limit logs to 400MB (4rotations of 100M each)
+     driver: "json-file"
+     options:
+       max-size: "100m"
+       max-file: "4"
