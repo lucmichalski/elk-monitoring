@@ -787,7 +787,7 @@
   "schemaVersion": 19,
   "style": "dark",
   "tags": [
-    "prometheus"
+    "mongo"
   ],
   "templating": {
     "list": [
@@ -804,11 +804,11 @@
         "definition": "",
         "hide": 0,
         "includeAll": true,
-        "label": "env",
+        "label": "Instance",
         "multi": true,
         "name": "env",
         "options": [],
-        "query": "label_values(mongodb_connections, instance)",
+        "query": "label_values(mongodb_mongod_connections, instance)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,

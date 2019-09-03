@@ -16,53 +16,143 @@
   "editable": true,
   "gnetId": 3901,
   "graphTooltip": 0,
-  "id": 5,
-  "iteration": 1567158199777,
+  "id": 3,
+  "iteration": 1567437781079,
   "links": [],
   "panels": [
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
+      "datasource": "Prometheus",
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 0,
+        "y": 0
+      },
+      "id": 10,
+      "options": {
+        "fieldOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "defaults": {
+            "mappings": [],
+            "max": 100,
+            "min": 0,
+            "thresholds": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "override": {},
+          "values": false
+        },
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "6.3.5",
+      "targets": [
+        {
+          "expr": "avg((sum(phpfpm_active_processes{instance=\"$Host\"})*100) / sum (phpfpm_total_processes{instance=\"$Host\"}))",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Total Process Utilisation",
+      "type": "gauge"
+    },
+    {
+      "datasource": "Prometheus",
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 6,
+        "y": 0
+      },
+      "id": 13,
+      "options": {
+        "fieldOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "defaults": {
+            "mappings": [],
+            "max": 100,
+            "min": 0,
+            "thresholds": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "override": {},
+          "values": false
+        },
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "6.3.5",
+      "targets": [
+        {
+          "expr": "sum(phpfpm_max_children_reached{instance=\"$Host\"})",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Max Children reached",
+      "type": "gauge"
+    },
+    {
       "datasource": "Prometheus",
       "description": "Total number of accepted connections",
-      "fill": 1,
-      "fillGradient": 0,
       "gridPos": {
         "h": 7,
         "w": 12,
-        "x": 0,
+        "x": 12,
         "y": 0
       },
       "id": 1,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
       "links": [],
-      "nullPointMode": "null",
       "options": {
-        "dataLinks": []
+        "fieldOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "defaults": {
+            "mappings": [],
+            "min": 0,
+            "thresholds": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "override": {},
+          "values": false
+        },
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
       },
-      "percentage": false,
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
+      "pluginVersion": "6.3.5",
       "targets": [
         {
-          "expr": "SUM(phpfpm_accepted_connections) by (instance)",
+          "expr": "sum by (instance)(rate(phpfpm_accepted_connections{instance=\"$Host\"}[1m])*60)",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -70,46 +160,10 @@
           "refId": "A"
         }
       ],
-      "thresholds": [],
       "timeFrom": null,
-      "timeRegions": [],
       "timeShift": null,
       "title": "Accepted Connections",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
+      "type": "gauge"
     },
     {
       "aliasColors": {},
@@ -117,96 +171,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "Prometheus",
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 7,
-        "w": 12,
-        "x": 12,
-        "y": 0
-      },
-      "id": 2,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "null",
-      "options": {
-        "dataLinks": []
-      },
-      "percentage": false,
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "SUM(phpfpm_max_active_processes) by (instance)",
-          "format": "time_series",
-          "interval": "",
-          "intervalFactor": 2,
-          "legendFormat": "{{instance}}",
-          "refId": "A"
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Active Max Processes",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "Prometheus",
+      "description": "Number of requests that exceed request_slowlog_timeout",
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -215,15 +180,19 @@
         "x": 0,
         "y": 7
       },
-      "id": 3,
+      "id": 11,
       "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "hideEmpty": false,
+        "hideZero": false,
+        "max": true,
         "min": false,
+        "rightSide": true,
         "show": true,
         "total": false,
-        "values": false
+        "values": true
       },
       "lines": true,
       "linewidth": 1,
@@ -242,11 +211,11 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "SUM(phpfpm_listen_queue) by (instance)",
+          "expr": "sum(phpfpm_process_request_duration{instance=\"$Host\"}) by (pid_hash)",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "{{instance}}",
+          "legendFormat": "{{pid_hash}}",
           "refId": "A"
         }
       ],
@@ -254,7 +223,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Listen Queue Connections",
+      "title": "Request Duration by process",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -270,7 +239,7 @@
       },
       "yaxes": [
         {
-          "format": "short",
+          "format": "µs",
           "label": null,
           "logBase": 1,
           "max": null,
@@ -297,7 +266,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "Prometheus",
-      "description": "The length of the socket queue, dictating maximum number of pending connections",
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -306,15 +274,19 @@
         "x": 12,
         "y": 7
       },
-      "id": 4,
+      "id": 12,
       "legend": {
+        "alignAsTable": true,
         "avg": false,
-        "current": false,
+        "current": true,
+        "hideEmpty": true,
+        "hideZero": true,
         "max": false,
         "min": false,
+        "rightSide": true,
         "show": true,
         "total": false,
-        "values": false
+        "values": true
       },
       "lines": true,
       "linewidth": 1,
@@ -333,22 +305,27 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "SUM(phpfpm_listen_queue_length) by (instance)",
+          "expr": "sum(phpfpm_process_state{instance=\"$Host\"}) by (state)",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "{{instance}}",
+          "legendFormat": "{{state}}",
           "refId": "A"
+        },
+        {
+          "expr": "sum(phpfpm_process_state{instance=\"$Host\"})",
+          "legendFormat": "Total",
+          "refId": "B"
         }
       ],
       "thresholds": [],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Listen Queue Length Connections",
+      "title": "# of processes by state",
       "tooltip": {
         "shared": true,
-        "sort": 0,
+        "sort": 2,
         "value_type": "individual"
       },
       "type": "graph",
@@ -388,7 +365,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "Prometheus",
-      "description": "Max number of connections the listen queue has reached since FPM start",
+      "description": "Number of requests that exceed request_slowlog_timeout",
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -397,7 +374,7 @@
         "x": 0,
         "y": 14
       },
-      "id": 5,
+      "id": 8,
       "legend": {
         "avg": false,
         "current": false,
@@ -424,10 +401,11 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(phpfpm_max_listen_queue) by (instance)",
+          "expr": "sum(phpfpm_slow_requests{instance=\"$Host\"}) by (instance)",
           "format": "time_series",
+          "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "{{instance}}",
+          "legendFormat": "{{instance}} - {{state}}",
           "refId": "A"
         }
       ],
@@ -435,7 +413,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Listen Queue Max Connections",
+      "title": "Slow Requests",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -514,7 +492,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(phpfpm_max_children_reached) by (instance)",
+          "expr": "sum(phpfpm_max_children_reached{instance=\"$Host\"}) by (instance)",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{instance}}",
@@ -576,6 +554,96 @@
         "x": 0,
         "y": 21
       },
+      "id": 14,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "avg((sum(phpfpm_active_processes{instance=\"$Host\"})*100) / sum (phpfpm_total_processes{instance=\"$Host\"}))",
+          "format": "time_series",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Process utilisation",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Total Process Utilisation",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "percent",
+          "label": "Process utilisation",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 21
+      },
       "id": 7,
       "legend": {
         "avg": false,
@@ -603,11 +671,11 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(phpfpm_total_processes) by (instance, state)",
+          "expr": "sum(phpfpm_total_processes{instance=\"$Host\"}) by (instance)",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "{{instance}} - {{state}}",
+          "legendFormat": "{{instance}}",
           "refId": "A"
         }
       ],
@@ -658,16 +726,15 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "Prometheus",
-      "description": "Number of requests that exceed request_slowlog_timeout",
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
         "h": 7,
         "w": 12,
-        "x": 12,
-        "y": 21
+        "x": 0,
+        "y": 28
       },
-      "id": 8,
+      "id": 3,
       "legend": {
         "avg": false,
         "current": false,
@@ -694,11 +761,11 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(phpfpm_slow_requests) by (instance)",
+          "expr": "SUM(phpfpm_listen_queue{instance=\"$Host\"}) by (instance)",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "{{instance}} - {{state}}",
+          "legendFormat": "{{instance}}",
           "refId": "A"
         }
       ],
@@ -706,7 +773,279 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Slow Requests",
+      "title": "Listen Queue Connections",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 28
+      },
+      "id": 2,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pluginVersion": "6.3.5",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "SUM(phpfpm_max_active_processes{instance=\"$Host\"}) by (instance)",
+          "format": "time_series",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "{{instance}}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Active Max Processes",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "description": "Max number of connections the listen queue has reached since FPM start",
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 35
+      },
+      "id": 5,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "sum(phpfpm_max_listen_queue{instance=\"$Host\"}) by (instance)",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "{{instance}}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Listen Queue Max Connections",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "description": "The length of the socket queue, dictating maximum number of pending connections",
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 35
+      },
+      "id": 4,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "SUM(phpfpm_listen_queue_length{instance=\"$Host\"}) by (instance)",
+          "format": "time_series",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "{{instance}}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Listen Queue Length Connections",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -744,27 +1083,30 @@
       }
     }
   ],
-  "refresh": "10s",
+  "refresh": "30s",
   "schemaVersion": 19,
   "style": "dark",
-  "tags": [],
+  "tags": [
+    "php"
+  ],
   "templating": {
     "list": [
       {
         "allValue": null,
         "current": {
+          "tags": [],
           "text": "All",
           "value": "$__all"
         },
         "datasource": "Prometheus",
-        "definition": "",
+        "definition": "label_values(phpfpm_accepted_connections, instance)",
         "hide": 0,
         "includeAll": true,
         "label": null,
         "multi": false,
         "name": "Host",
         "options": [],
-        "query": "label_values(phpfpm_accepted_connections_total, instance)",
+        "query": "label_values(phpfpm_accepted_connections, instance)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -806,8 +1148,8 @@
       "30d"
     ]
   },
-  "timezone": "",
+  "timezone": "browser",
   "title": "PHP-FPM",
   "uid": "Fya5E-KWz",
-  "version": 3
+  "version": 1
 }

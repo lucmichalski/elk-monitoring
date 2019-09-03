@@ -82,6 +82,11 @@ scrape_configs:
       - source_labels: [__name__]
         regex: go_.*
         action: drop
+    relabel_configs:
+      - source_labels: [__address__]
+        regex: '.*'
+        target_label: instance
+        replacement: 'haproxy_a'      
 
   - job_name: "nginx"
     static_configs:
@@ -121,4 +126,9 @@ scrape_configs:
     metric_relabel_configs:
       - source_labels: [__name__]
         regex: go_.*
-        action: drop          
+        action: drop    
+    relabel_configs:
+      - source_labels: [__address__]
+        regex: '.*'
+        target_label: instance
+        replacement: 'php_1'       

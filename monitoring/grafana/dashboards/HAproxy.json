@@ -80,7 +80,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "irate(haproxy_server_http_responses_total{backend=~\"$backend\", server=~\"$server\", code=~\"$code\", alias=\"$alias\"}[180s])",
+          "expr": "irate(haproxy_server_http_responses_total{backend=~\"$backend\", server=~\"$server\", code=~\"$code\", instance=\"$instance\"}[180s])",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "{{ backend }}/{{ server }}/{{ code }}",
@@ -177,7 +177,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(haproxy_server_check_duration_milliseconds{backend=~\"$backend\", server=~\"$server\", alias=\"$alias\"}) without (alias)",
+          "expr": "avg(haproxy_server_check_duration_milliseconds{backend=~\"$backend\", server=~\"$server\", instance=\"$instance\"}) without (instance)",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "{{ backend }}/{{ server }}",
@@ -274,7 +274,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "irate(haproxy_server_check_failures_total{backend=~\"$backend\", server=~\"$server\", alias=\"$alias\"}[180s])",
+          "expr": "irate(haproxy_server_check_failures_total{backend=~\"$backend\", server=~\"$server\", instance=\"$instance\"}[180s])",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "{{ backend }}/{{ server }}",
@@ -371,7 +371,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "irate(haproxy_server_downtime_seconds_total{backend=~\"$backend\", server=~\"$server\", alias=\"$alias\"}[180s])",
+          "expr": "irate(haproxy_server_downtime_seconds_total{backend=~\"$backend\", server=~\"$server\", instance=\"$instance\"}[180s])",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "{{ backend }}/{{ server }}",
@@ -468,7 +468,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "irate(haproxy_server_redispatch_warnings_total{backend=~\"$backend\", server=~\"$server\", alias=\"$alias\"}[180s])",
+          "expr": "irate(haproxy_server_redispatch_warnings_total{backend=~\"$backend\", server=~\"$server\", instance=\"$instance\"}[180s])",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "{{ backend }}/{{ server }}",
@@ -565,7 +565,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "irate(haproxy_server_response_errors_total{backend=~\"$backend\", server=~\"$server\", alias=\"$alias\"}[180s])",
+          "expr": "irate(haproxy_server_response_errors_total{backend=~\"$backend\", server=~\"$server\", instance=\"$instance\"}[180s])",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "{{ backend }}/{{ server }}",
@@ -662,7 +662,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "irate(haproxy_server_retry_warnings_total{backend=~\"$backend\", server=~\"$server\", alias=\"$alias\"}[180s])",
+          "expr": "irate(haproxy_server_retry_warnings_total{backend=~\"$backend\", server=~\"$server\", instance=\"$instance\"}[180s])",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "{{ backend }}/{{ server }}",
@@ -773,7 +773,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "irate(haproxy_server_bytes_in_total{backend=~\"$backend\", server=~\"$server\", alias=\"$alias\"}[180s])",
+          "expr": "irate(haproxy_server_bytes_in_total{backend=~\"$backend\", server=~\"$server\", instance=\"$instance\"}[180s])",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "{{ backend }}/{{ server }}",
@@ -870,7 +870,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "irate(haproxy_server_bytes_out_total{backend=~\"$backend\", server=~\"$server\", alias=\"$alias\"}[180s])",
+          "expr": "irate(haproxy_server_bytes_out_total{backend=~\"$backend\", server=~\"$server\", instance=\"$instance\"}[180s])",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "{{ backend }}/{{ server }}",
@@ -986,7 +986,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "irate(haproxy_server_connections_total{backend=~\"$backend\", server=~\"$server\", alias=\"$alias\"}[180s])",
+          "expr": "irate(haproxy_server_connections_total{backend=~\"$backend\", server=~\"$server\", instance=\"$instance\"}[180s])",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "{{ backend }}/{{ server }}",
@@ -1088,7 +1088,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "irate(haproxy_server_connection_errors_total{backend=~\"$backend\", server=~\"$server\", alias=\"$alias\"}[180s])",
+          "expr": "irate(haproxy_server_connection_errors_total{backend=~\"$backend\", server=~\"$server\", instance=\"$instance\"}[180s])",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "{{ backend }}/{{ server }}",
@@ -1197,7 +1197,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "haproxy_server_current_queue{backend=~\"$backend\", server=~\"$server\", alias=\"$alias\"}",
+          "expr": "haproxy_server_current_queue{backend=~\"$backend\", server=~\"$server\", instance=\"$instance\"}",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "{{ backend }}/{{ server }}",
@@ -1292,7 +1292,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "haproxy_server_max_queue{backend=~\"$backend\", server=~\"$server\", alias=\"$alias\"}",
+          "expr": "haproxy_server_max_queue{backend=~\"$backend\", server=~\"$server\", instance=\"$instance\"}",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "{{ backend }}/{{ server }}",
@@ -1401,7 +1401,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "haproxy_server_current_sessions{backend=~\"$backend\", server=~\"$server\", alias=\"$alias\"}",
+          "expr": "haproxy_server_current_sessions{backend=~\"$backend\", server=~\"$server\", instance=\"$instance\"}",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "{{ backend }}/{{ server }}",
@@ -1496,7 +1496,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "haproxy_server_current_session_rate{backend=~\"$backend\", server=~\"$server\", alias=\"$alias\"}",
+          "expr": "haproxy_server_current_session_rate{backend=~\"$backend\", server=~\"$server\", instance=\"$instance\"}",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "{{ backend }}/{{ server }}",
@@ -1591,7 +1591,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "haproxy_server_max_sessions{backend=~\"$backend\", server=~\"$server\", alias=\"$alias\"}",
+          "expr": "haproxy_server_max_sessions{backend=~\"$backend\", server=~\"$server\", instance=\"$instance\"}",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "{{ backend }}/{{ server }}",
@@ -1686,7 +1686,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "haproxy_server_max_session_rate{backend=~\"$backend\", server=~\"$server\", alias=\"$alias\"}",
+          "expr": "haproxy_server_max_session_rate{backend=~\"$backend\", server=~\"$server\", instance=\"$instance\"}",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "{{ backend }}/{{ server }}",
@@ -1796,7 +1796,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "haproxy_server_up{backend=~\"$backend\", server=~\"$server\", alias=\"$alias\"}",
+          "expr": "haproxy_server_up{backend=~\"$backend\", server=~\"$server\", instance=\"$instance\"}",
           "intervalFactor": 2,
           "legendFormat": "{{ backend }}/{{ server }}",
           "refId": "A",
@@ -1889,7 +1889,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "haproxy_server_weight{backend=~\"$backend\", server=~\"$server\", alias=\"$alias\"}",
+          "expr": "haproxy_server_weight{backend=~\"$backend\", server=~\"$server\", instance=\"$instance\"}",
           "intervalFactor": 2,
           "legendFormat": "{{ backend }}/{{ server }}",
           "refId": "A",
@@ -1943,8 +1943,7 @@
   "schemaVersion": 19,
   "style": "dark",
   "tags": [
-    "haproxy",
-    "servers"
+    "haproxy"
   ],
   "templating": {
     "list": [
@@ -2012,9 +2011,9 @@
         "includeAll": false,
         "label": "Load Balancer",
         "multi": false,
-        "name": "alias",
+        "name": "instance",
         "options": [],
-        "query": "label_values(haproxy_up, alias)",
+        "query": "label_values(haproxy_up, instance)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -2039,7 +2038,7 @@
         "multi": true,
         "name": "backend",
         "options": [],
-        "query": "label_values(haproxy_server_bytes_in_total{alias=\"$alias\"}, backend)",
+        "query": "label_values(haproxy_server_bytes_in_total{instance=\"$instance\"}, backend)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -2064,7 +2063,7 @@
         "multi": true,
         "name": "server",
         "options": [],
-        "query": "label_values(haproxy_server_bytes_in_total{alias=\"$alias\", backend=~\"$backend\"}, server)",
+        "query": "label_values(haproxy_server_bytes_in_total{instance=\"$instance\", backend=~\"$backend\"}, server)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -2089,7 +2088,7 @@
         "multi": true,
         "name": "code",
         "options": [],
-        "query": "label_values(haproxy_server_http_responses_total{alias=\"$alias\", backend=~\"$backend\", server=~\"$server\"}, code)",
+        "query": "label_values(haproxy_server_http_responses_total{instance=\"$instance\", backend=~\"$backend\", server=~\"$server\"}, code)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
