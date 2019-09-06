@@ -328,50 +328,50 @@ services:
        max-size: "100m"
        max-file: "4"
 
-  # elasticsearch:
-  #   image: docker.elastic.co/elasticsearch/elasticsearch:7.3.1
-  #   container_name: cluster-elasticsearch
-  #   environment:
-  #     - "ES_JAVA_OPTS=-Xms256m -Xmx256m"
-  #   ulimits:
-  #     memlock:
-  #       soft: -1
-  #       hard: -1
-  #   volumes:
-  #     - ./logging/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-  #     - esdata:/usr/share/elasticsearch/data
-  #   ports:
-  #     - 9200:9200
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.3.1
+    container_name: cluster-elasticsearch
+    environment:
+      - "ES_JAVA_OPTS=-Xms256m -Xmx256m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./logging/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - esdata:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
 
-  # logstash:
-  #   image: docker.elastic.co/logstash/logstash:7.3.1
-  #   container_name: cluster-logstash
-  #   environment:
-  #     - "LS_JAVA_OPTS=-Xms256m -Xmx256m"
-  #   volumes:
-  #     - ./logging/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
-  #     - ./logging/logstash/pipeline/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
-  #   depends_on:
-  #     - elasticsearch
+  logstash:
+    image: docker.elastic.co/logstash/logstash:7.3.1
+    container_name: cluster-logstash
+    environment:
+      - "LS_JAVA_OPTS=-Xms256m -Xmx256m"
+    volumes:
+      - ./logging/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
+      - ./logging/logstash/pipeline/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+    depends_on:
+      - elasticsearch
 
-  # filebeat:
-  #   image: docker.elastic.co/beats/filebeat:7.3.1
-  #   container_name: cluster-filebeat
-  #   volumes:
-  #     - ./logging/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
-  #     - nginxlogs:/logs/nginx:ro
-  #   depends_on:
-  #     - logstash
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:7.3.1
+    container_name: cluster-filebeat
+    volumes:
+      - ./logging/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - ./logs/nginx:/logs/nginx:ro
+    depends_on:
+      - logstash
 
-  # kibana:
-  #   image: docker.elastic.co/kibana/kibana:7.3.1
-  #   container_name: cluster-kibana
-  #   volumes:
-  #     - ./logging/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
-  #   ports:
-  #     - 5601:5601
-  #   depends_on:
-  #     - elasticsearch
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.3.1
+    container_name: cluster-kibana
+    volumes:
+      - ./logging/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
+    ports:
+      - 5601:5601
+    depends_on:
+      - elasticsearch
 
   
 
