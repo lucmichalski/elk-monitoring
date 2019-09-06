@@ -16,6 +16,17 @@ docker run -d --name mysql-exporter -p 9104:9104 --link some-mysql:some-mysql -e
 --collect.info_schema.tables \
 --collect.info_schema.userstats
 
+###### Enable slow logs
+SET GLOBAL slow_query_log = 'ON';
+SET GLOBAL long_query_time = 3;
+SET GLOBAL slow_query_log_file = '/var/log/mysql/slowlog.log';
+show global variables like '%slow%';
+
+slow-launch-time                                             1
+slow-query-log                                               TRUE
+slow-query-log-file                                          /var/lib/mysql/d293d87e0ff1-slow.log
+
+
 ### DOCKER
 
 /etc/docker/daemon.json
