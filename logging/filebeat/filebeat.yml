@@ -10,6 +10,18 @@ filebeat.inputs:
   fields:
     log_type: "nginx_error"
 
+- type: log
+  paths:
+    - "/logs/mysql/slow.log*"
+  fields:
+    log_type: "mysql_slow"
+
+- type: log
+  paths:
+    - "/logs/mysql/error.log*"
+  fields:
+    log_type: "mysql_error"
+
 output:
   logstash:
     enabled: true
