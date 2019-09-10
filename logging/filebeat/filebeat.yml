@@ -1,3 +1,18 @@
+# filebeat.modules:
+# - module: mysql
+#   # error:
+#   #   enabled: true
+#   #   var.paths: ["/logs/mysql/error.log*"]
+#   #   fields:
+#   #     log_type: "mysql_error"
+
+#   slowlog:
+#     enabled: true
+#     var.paths: ["/logs/mysql/slow.log*"]
+#     fields:
+#       log_type: "mysql_slow"
+
+#=========================== Filebeat inputs =============================      
 filebeat.inputs:
 - type: log
   paths:
@@ -12,15 +27,20 @@ filebeat.inputs:
 
 - type: log
   paths:
-    - "/logs/mysql/slow.log*"
-  fields:
-    log_type: "mysql_slow"
-
-- type: log
-  paths:
     - "/logs/mysql/error.log*"
   fields:
     log_type: "mysql_error"
+- type: log
+  paths:
+    - "/logs/mysql/slow.log*"
+  multiline:
+    pattern: '^# Time'
+    negate: true
+    match: after
+  fields:
+    log_type: "mysql_slow"
+
+
 
 output:
   logstash:
