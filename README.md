@@ -116,6 +116,31 @@ docker run -d --name ngx-exporter \
     nginx/nginx-prometheus-exporter:0.4.2 \
     -nginx.scrape-uri http://ngxstat:9898/status
 
+###### NGINX bare-metal
+
+sudo useradd --no-create-home --shell /bin/false nginx_exporter
+wget https://github.com/nginxinc/nginx-prometheus-exporter/releases/download/v0.4.2/nginx-prometheus-exporter-0.4.2-linux-amd64.tar.gz
+tar vxzf nginx-prometheus-exporter-0.4.2-linux-amd64.tar.gz
+sudo cp nginx-prometheus-exporter /usr/bin
+sudo chown nginx_exporter:nginx_exporter /usr/bin/nginx-prometheus-exporter
+sudo vi /etc/systemd/system/nginx_exporter.service
+[Unit]
+Description=Nginx Exporter
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=nginx_exporter
+Group=nginx_exporter
+Type=simple
+ExecStart=/usr/bin/nginx-prometheus-exporter
+
+[Install]
+WantedBy=multi-user.target
+
+sudo systemctl daemon-reload
+sudo systemctl start nginx_exporter
+
 ###### NGINX VTS
 docker build -t ngxvts -f nginx_status/vts/Dockerfile ./nginx_status/vts/.
 docker run -d --name ngxvts ngxvts
@@ -139,7 +164,31 @@ docker run -d  \
     google/cadvisor
 
 ### MEMCACHED
+###### Bare metal
+useradd --no-create-home --shell /bin/false memcached_exporter
+wget https://github.com/prometheus/memcached_exporter/releases/download/v0.6.0/memcached_exporter-0.6.0.linux-amd64.tar.gz
+tar vxzf memcached_exporter-0.6.0.linux-amd64.tar.gz
+cp memcached_exporter-0.6.0.linux-amd64/memcached_exporter /usr/bin
+chown memcached_exporter:memcached_exporter /usr/bin/memcached_exporter
+vi /etc/systemd/system/memcached_exporter.service
+[Unit]
+Description=Memcached Exporter
+Wants=network-online.target
+After=network-online.target
 
+[Service]
+User=memcached_exporter
+Group=memcached_exporter
+Type=simple
+ExecStart=/usr/bin/memcached_exporter
+
+[Install]
+WantedBy=multi-user.target
+
+systemctl daemon-reload
+systemctl start memcached_exporter
+
+###### Docker version
 docker run -d --name memcached-exporter \
     -p 9150:9150 \
     quay.io/prometheus/memcached-exporter \
@@ -151,6 +200,33 @@ docker run -d --rm \
     -p 9253:9253 \
     -e PHP_FPM_SCRAPE_URI="tcp://192.168.1.46:9000/status" \
     hipages/php-fpm_exporter
+
+###### Binary realization
+sudo useradd --no-create-home --shell /bin/false php_exporter
+wget https://github.com/hipages/php-fpm_exporter/releases/download/v1.0.0/php-fpm_exporter_1.0.0_linux_amd64
+cp php-fpm_exporter_1.0.0_linux_amd64 /usr/bin/php-fpm-exporter
+chmod +x /usr/bin/php-fpm-exporter
+chown php_exporter:php_exporter /usr/bin/php-fpm-exporter
+
+sudo vi /etc/systemd/system/php_exporter.service
+[Unit]
+Description=PHP Exporter
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=php_exporter
+Group=php_exporter
+Type=simple
+ExecStart=/usr/bin/php-fpm-exporter server --phpfpm.scrape-uri tcp://localhost:7000/php-fpm-status.php --phpfpm.fix-process-count true --web.listen-address :9255
+
+[Install]
+WantedBy=multi-user.target
+
+sudo systemctl daemon-reload
+sudo systemctl start php_exporter
+
+http://localhost/php-fpm-status.php
 
 #### Prometheus metrics query
 ({__name__=~'go_.*', job='haproxy'})

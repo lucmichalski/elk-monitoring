@@ -1,22 +1,115 @@
 groups:
-  - name: Mysql
-    rules:
-    - alert: Mysql status
-      expr: mysql_up < 1
-      for: 1m
-      labels:
-        severity: warning
-      annotations:
-        summary: "Mysql is down"
-        description: "Mysql on {{ $labels.instance }} is currently down."
-
   - name: Node
     rules:
-    - alert: Disk is almost full
-      expr: (node_filesystem_avail_bytes{mountpoint="/"}/node_filesystem_size_bytes{mountpoint="/"}) < 0.5
+    - alert: root_disk_full
+      expr: node_filesystem_avail_bytes{mountpoint="/"}/node_filesystem_size_bytes{mountpoint="/"} * 100 < 25
       for: 1m
       labels:
         severity: warning
       annotations:
-        summary: "Disk is less then 50%"
-        description: 'Disk will be full on {{ $labels.instance }}. Now available {{ $value | printf "%.2f" }}%.'
+        summary: "Server root storage is almost full"
+        description: 'Node {{ $labels.instance }} storage usage is {{ humanize $value}}%. Device {{ $labels.device }} mounted to {{ $labels.mountpoint }}'
+
+    - alert: disk_full
+      expr: node_filesystem_avail_bytes{device!~"rootfs",mountpoint!="/"}/node_filesystem_size_bytes{device!~"rootfs",mountpoint!="/"} * 100 < 25
+      for: 1m
+      labels:
+        severity: warning
+      annotations:
+        summary: "Server storage is almost full"
+        description: 'Node {{ $labels.instance }} storage usage is {{ humanize $value}}%. Device {{ $labels.device }} mounted to {{ $labels.mountpoint }}'
+
+    - alert: high_cpu_load
+      expr: (100 - (avg by (instance) (irate(node_cpu_seconds_total{job="node-exporter",mode="idle"}[5m])) * 100)) > 70
+      for: 1m
+      labels:
+        severity: warning
+      annotations:
+        summary: "Server CPU load is high"
+        description: 'Node {{ $labels.instance }} CPU load is {{ humanize $value }}% in total.'
+
+    - alert: high_memory_load
+      expr: (sum(node_memory_MemTotal_bytes) by (instance) - sum(node_memory_MemFree_bytes + node_memory_Buffers_bytes + node_memory_Cached_bytes) by (instance) ) / sum(node_memory_MemTotal_bytes) by (instance) * 100 > 90
+      for: 1m
+      labels:
+        severity: warning
+      annotations:
+        summary: "Server RAM is almost full"
+        description: 'Node {{ $labels.instance }} RAM usage is {{ humanize $value}}%.'
+
+  - name: Prom targets
+    rules:
+    - alert: monitor_service_down
+      expr: up == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "Monitor service non-operational"
+        description: 'Service {{ $labels.instance }} is down.'
+
+  - name: Haproxy
+    rules:
+    - alert: frontend_is_down
+      expr: sum by (frontend)(irate(haproxy_frontend_http_responses_total{code=~"2xx|3xx"}[180s])) < 1
+      for: 1m
+      labels:
+        severity: warning
+      annotations:
+        summary: "Haproxy frontend is down"
+        description:  'Frontend {{ $labels.frontend }} is down.'
+
+    - alert: main_rate_double
+      expr: sum by (frontend)(haproxy_frontend_http_requests_total) / sum by(frontend)(avg_over_time(haproxy_frontend_http_requests_total{}[1h])) > 2
+      for: 1m
+      labels:
+        severity: warning
+      annotations:
+        summary: "Haproxy frontend rate is doubled"
+        description: 'Frontend {{ $labels.frontend }} doubled request rate.'
+
+    - alert: haproxy_down
+      expr: haproxy_up == 0
+      for: 1m
+      labels:
+        severity: warning
+      annotations:
+        summary: "Haproxy is down"
+        description: 'Haproxy instance {{ $labels.instance }} is currently down.'
+
+  - name: PHP-fpm
+    rules:
+    - alert: php-fpm_down
+      expr: phpfpm_up == 0
+      for: 1m
+      labels:
+        severity: warning
+      annotations:
+        summary: "PHP-FPM is down"
+        description: 'PHP-FPM has been down for more than 1 minute on the node {{ $labels.instance }}.'
+  
+    - alert: php-fpm_high_number_accepted_connections
+      expr: rate(phpfpm_accepted_connections[1m])/rate(phpfpm_accepted_connections[1h]) > 2
+      for: 30s
+      labels:
+        severity: warning
+      annotations:
+        summary: "PHP-FPM high number accepted connections"
+        description: 'PHP-FPM number active connections is doubled on the node {{ $labels.instance }}.'
+  
+    - alert: php-fpm_number_maximun_active_processes
+      expr: increase(phpfpm_max_active_processes[30s]) > 0
+      for: 10s
+      labels:
+        severity: warning
+      annotations:
+        summary: "PHP-FPM number maximum active processes is increasing"
+        description: 'Maximum of active processes is increasing on the node {{ $labels.instance }} for the last 30 seconds'  
+    - alert: php-fpm_max_children_reached_total
+      expr: increase (phpfpm_max_children_reached[30s]) > 0
+      for: 10s
+      labels:
+        severity: warning
+      annotations:
+        summary: "PHP-FPM number max children is increasing"
+        description: 'PHP-FPM max children reached is increasing on the node {{ $labels.instance }} for the last 30 seconds'
