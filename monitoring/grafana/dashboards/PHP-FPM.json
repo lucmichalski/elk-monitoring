@@ -16,8 +16,8 @@
   "editable": true,
   "gnetId": 3901,
   "graphTooltip": 0,
-  "id": 3,
-  "iteration": 1567437781079,
+  "id": 6,
+  "iteration": 1569250567090,
   "links": [],
   "panels": [
     {
@@ -47,7 +47,8 @@
                 "color": "red",
                 "value": 80
               }
-            ]
+            ],
+            "unit": "percent"
           },
           "override": {},
           "values": false
@@ -56,7 +57,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "6.3.5",
+      "pluginVersion": "6.3.3",
       "targets": [
         {
           "expr": "avg((sum(phpfpm_active_processes{instance=\"$Host\"})*100) / sum (phpfpm_total_processes{instance=\"$Host\"}))",
@@ -104,7 +105,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "6.3.5",
+      "pluginVersion": "6.3.3",
       "targets": [
         {
           "expr": "sum(phpfpm_max_children_reached{instance=\"$Host\"})",
@@ -117,8 +118,24 @@
       "type": "gauge"
     },
     {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": false,
+      "colors": [
+        "#299c46",
+        "rgba(237, 129, 40, 0.89)",
+        "#d44a3a"
+      ],
       "datasource": "Prometheus",
       "description": "Total number of accepted connections",
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
       "gridPos": {
         "h": 7,
         "w": 12,
@@ -126,30 +143,44 @@
         "y": 0
       },
       "id": 1,
+      "interval": null,
       "links": [],
-      "options": {
-        "fieldOptions": {
-          "calcs": [
-            "mean"
-          ],
-          "defaults": {
-            "mappings": [],
-            "min": 0,
-            "thresholds": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "override": {},
-          "values": false
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
         },
-        "orientation": "auto",
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "options": {},
+      "pluginVersion": "6.3.3",
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
       },
-      "pluginVersion": "6.3.5",
+      "tableColumn": "",
       "targets": [
         {
           "expr": "sum by (instance)(rate(phpfpm_accepted_connections{instance=\"$Host\"}[1m])*60)",
@@ -160,10 +191,20 @@
           "refId": "A"
         }
       ],
+      "thresholds": "",
       "timeFrom": null,
       "timeShift": null,
       "title": "Accepted Connections",
-      "type": "gauge"
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "avg"
     },
     {
       "aliasColors": {},
@@ -1095,13 +1136,13 @@
         "allValue": null,
         "current": {
           "tags": [],
-          "text": "All",
-          "value": "$__all"
+          "text": "php3",
+          "value": "php3"
         },
         "datasource": "Prometheus",
         "definition": "label_values(phpfpm_accepted_connections, instance)",
         "hide": 0,
-        "includeAll": true,
+        "includeAll": false,
         "label": null,
         "multi": false,
         "name": "Host",
@@ -1151,5 +1192,5 @@
   "timezone": "browser",
   "title": "PHP-FPM",
   "uid": "Fya5E-KWz",
-  "version": 1
+  "version": 3
 }
