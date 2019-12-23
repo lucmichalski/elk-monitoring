@@ -8,7 +8,31 @@ docker run -it --rm  --link some-mysql:some-mysql mysql mysql -hsome-mysql -uroo
 CREATE USER 'exporter'@'localhost' IDENTIFIED BY 'HardPaSSw0rd';
 GRANT PROCESS, REPLICATION CLIENT ON *.* TO 'exporter'@'localhost';
 GRANT SELECT ON performance_schema.* TO 'exporter'@'localhost';
+###### Bare-metal exporter
+useradd --no-create-home --shell /bin/false mysql_exporter
+wget https://github.com/prometheus/mysqld_exporter/releases/download/v0.12.1/mysqld_exporter-0.12.1.linux-amd64.tar.gz
+tar vxzf mysqld_exporter-0.12.1.linux-amd64.tar.gz
+cp mysqld_exporter-0.12.1.linux-amd64/mysqld_exporter /usr/bin/mysqld_exporter_a
+chown mysqld_exporter. /usr/bin/mysqld_exporter_a
+vi /etc/systemd/system/mysqld_exporter.service
+[Unit]
+Description=MySQL Exporter
+Wants=network-online.target
+After=network-online.target
 
+[Service]
+User=mysqld_exporter
+Group=mysqld_exporter
+Type=simple
+ExecStart=/usr/bin/mysqld_exporter
+
+[Install]
+WantedBy=multi-user.target
+
+sudo systemctl daemon-reload
+sudo systemctl start mysqld_exporter
+
+###### Docker exporter
 docker run -d --name mysql-exporter -p 9104:9104 --link some-mysql:some-mysql -e DATA_SOURCE_NAME="exporter:HardPaSSw0rd@(some-mysql:3306)/" prom/mysqld-exporter \
 --collect.info_schema.processlist \
 --collect.info_schema.innodb_metrics \
@@ -201,7 +225,7 @@ docker run -d --rm \
     -e PHP_FPM_SCRAPE_URI="tcp://192.168.1.46:9000/status" \
     hipages/php-fpm_exporter
 
-###### Binary realization
+###### Bare-metal exporter
 sudo useradd --no-create-home --shell /bin/false php_exporter
 wget https://github.com/hipages/php-fpm_exporter/releases/download/v1.0.0/php-fpm_exporter_1.0.0_linux_amd64
 cp php-fpm_exporter_1.0.0_linux_amd64 /usr/bin/php-fpm-exporter
