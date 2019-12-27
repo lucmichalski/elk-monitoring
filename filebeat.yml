@@ -1,0 +1,30 @@
+filebeat.inputs:
+- type: log
+  enabled: true
+  paths:
+    - /var/log/php-fpm/www-slow.log
+  multiline.pattern: ^(\[0x0|script_filename|$)
+  multiline.negate: false
+  multiline.match: after
+
+- type: log
+  paths:
+    - /var/log/nginx/access.log
+  fields:
+    log_type: "nginx_access"
+- type: log
+  paths:
+    - var/log/nginx/error.log
+  fields:
+    log_type: "nginx_error"
+
+
+filebeat.config.modules:
+  path: ${path.config}/modules.d/*.yml
+  reload.enabled: true
+  reload.period: 1m
+setup.template.settings:
+  index.number_of_shards: 3
+output.logstash:
+  hosts: ["admin:5044"]
+logging.level: debug

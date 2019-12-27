@@ -1,0 +1,2 @@
+Dec 27 07:30:09 php1 php[122815]: PHPSESSID=DB Error: Error in mysql query: 0 :  sql:(SELECT playername AS name, userID AS id FROM users_lastaction WHERE userID =  OR playername = )#012                        UNION DISTINCT#012                        (SELECT playername AS name, userID AS id FROM users_lastaction WHERE playername LIKE  AND lastaction >= 1577430909 LIMIT 20)#012                        UNION DISTINCT#012                        (SELECT playername AS name, userID AS id FROM users_lastaction WHERE playername LIKE  AND lastaction < 1577430909 LIMIT 20)
+

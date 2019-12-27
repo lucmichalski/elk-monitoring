@@ -1,0 +1,17 @@
+[27-Dec-2019 00:56:36]  [pool www] pid 92881
+script_filename = /torncity/html/api.php
+[0x00007fd4c8813ad0] query() /torncity/html/casino/lib/sources/mysql.lib.php:434
+[0x00007fd4c8813a00] queryRoutine() /torncity/html/casino/lib/sources/mysql.lib.php:415
+[0x00007fd4c8813970] _query() /torncity/html/casino/lib/sources/mysql.lib.php:726
+[0x00007fd4c88138b0] query() /torncity/html/casino/lib/DataSource.lib.php:188
+[0x00007fd4c8813830] query() /torncity/html/casino/lib/CommonClasses/parentDBConnection.class.php:167
+[0x00007fd4c8813760] makeQuery() /torncity/html/casino/lib/CommonClasses/parentDBConnection.class.php:328
+[0x00007fd4c88136d0] query() /torncity/html/casino/lib/CommonClasses/DS.class.php:12
+[0x00007fd4c8813640] q() /torncity/html/casino/modules/items/classes/item.class.php:496
+[0x00007fd4c88135a0] propertyValue() /torncity/html/casino/modules/api/classes/request/1.0/apiRequestUser.class.php:1052
+[0x00007fd4c8813480] getUserPropertyList() /torncity/html/casino/modules/api/classes/request/1.0/apiRequestUser.class.php:733
+[0x00007fd4c8813360] properties() /torncity/html/casino/modules/api/classes/request/apiRequestBasic.class.php:72
+[0x00007fd4c8813280] makeRequest() /torncity/html/casino/modules/api/classes/request/apiRequestBasic.class.php:61
+[0x00007fd4c8813210] api() /torncity/html/casino/modules/api/classes/apiRequestProcessorBasic.class.php:249
+[0x00007fd4c8813180] api() /torncity/html/casino/modules/api/classes/apiRequestWrapper.class.php:45
+[0x00007fd4c8813100] api() /torncity/html/api.php:50
