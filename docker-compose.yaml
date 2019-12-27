@@ -345,6 +345,22 @@ services:
     ports:
       - 9200:9200
 
+  curator:    
+    image: bobrik/curator:5.8.1
+    container_name: cluster-curator        
+    deploy:
+      restart_policy:
+        condition: always
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    volumes:
+      - ./logging/curator/curator.yaml:/curator/curator.yml:ro
+      - ./logging/curator/actions.yaml:/curator/actions.yml:ro
+    command: '--config /curator/curator.yml /curator/actions.yml'
+    depends_on:
+      - elasticsearch    
+
   logstash:
     image: docker.elastic.co/logstash/logstash:7.3.1
     container_name: cluster-logstash

@@ -1,0 +1,15 @@
+---
+client:
+  hosts:
+    - elasticsearch
+  port: 9200
+  use_ssl: False
+  ssl_no_validate: False
+  timeout: 60
+  master_only: False
+
+logging:
+  loglevel: INFO
+  logfile:
+  logformat: default
+  blacklist: ['elasticsearch']
